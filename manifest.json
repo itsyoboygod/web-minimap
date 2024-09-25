@@ -1,7 +1,7 @@
 {
     "name": "Web Minimap",
     "description": "A simple minimap for a web window",
-    "version": "1.1.1",
+    "version": "1.2.1",
     "manifest_version": 3,
     "icons": {
       "16": "/img/wwc_logo_icon_16x16.png",

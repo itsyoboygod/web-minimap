@@ -44,23 +44,61 @@ getDimensions();
 window.addEventListener('scroll', trackScroll);
 window.addEventListener('resize', getDimensions);
 
-// New function to handle clicks on the minimap
+// Function to handle minimap clicks for quick jumps
 function jumpToClick(event) {
     let minimapRect = minimap.getBoundingClientRect();
-    let clickY = event.clientY - minimapRect.top;  // Y-coordinate of the click within the minimap
+    let clickY = event.clientY - minimapRect.top;
     let minimapHeight = minimap.clientHeight;
 
-    // Calculate the percentage of the minimap that was clicked
     let clickRatio = clickY / minimapHeight;
+    let scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    let scrollToY = clickRatio * scrollableHeight;
 
-    // Get the corresponding scroll position for the main window
-    let scrollToY = clickRatio * document.body.scrollHeight;
-
-    // Scroll the main window to that position
     window.scrollTo({
         top: scrollToY,
-        behavior: 'smooth'  // Smooth scrolling for better UX
+        behavior: 'smooth'
     });
 }
 
 minimap.addEventListener('click', jumpToClick);
+
+// Drag functionality for minimap__viewer
+let isDragging = false;
+let startY;
+let startScrollY;
+
+function onMouseDown(event) {
+    isDragging = true;
+    startY = event.clientY;
+    startScrollY = window.scrollY;
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+}
+
+function onMouseMove(event) {
+    if (!isDragging) return;
+
+    let minimapRect = minimap.getBoundingClientRect();
+    let deltaY = event.clientY - startY;
+
+    let minimapHeight = minimap.clientHeight;
+    let scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    // Calculate new scroll position based on the dragging distance
+    let scrollDelta = (deltaY / minimapHeight) * scrollableHeight;
+
+    window.scrollTo({
+        top: startScrollY + scrollDelta
+    });
+}
+
+function onMouseUp() {
+    isDragging = false;
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+}
+
+// Add event listener for dragging on the viewer
+viewer.addEventListener('mousedown', onMouseDown);
