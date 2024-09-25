@@ -26,7 +26,7 @@ function getDimensions() {
     let bodyRatio = document.body.clientHeight / bodyWidth;
     let winRatio = window.innerHeight / window.innerWidth;
 
-    minimap.style.width = '15%';
+    minimap.style.width = '10%';
     realScale = minimap.clientWidth / bodyWidth;
     minimapSize.style.paddingTop = `${bodyRatio * 100}%`;
     viewer.style.paddingTop = `${winRatio * 100}%`;
