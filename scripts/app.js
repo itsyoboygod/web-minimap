@@ -1,3 +1,20 @@
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    if (message.action === 'updateMinimapSize') {
+        minimap.style.width = `${message.value}%`;
+        getDimensions(); // Recalculate dimensions after size change
+    }
+    if (message.action === 'updateMinimapOpacity') {
+        minimap.style.opacity = message.value / 100; // Convert to decimal value for opacity
+    }
+    if (message.action === 'updateMinimapViewer') {
+        viewer.style.width = `${message.value}%`; // Adjust viewer width
+    }
+    if (message.action === 'updateMinimapScale') {
+        scale = message.value / 100; // Convert to scale value
+        getDimensions(); // Recalculate with the new scale
+    }
+});
+
 function createElement(tag, { className = '' } = {}) {
     const element = document.createElement(tag);
     className ? element.classList.add(className) : "";
